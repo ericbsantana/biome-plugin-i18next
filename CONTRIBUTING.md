@@ -5,14 +5,16 @@ npm install
 npm test
 ```
 
-Each rule in `rules/` has a fixture in `test/fixtures/` and a test asserting the exact flagged lines. `test/recommended.test.js` packs the package, installs it into a temp project and lints through `extends`, which is how users run it.
+Each rule in `rules/` has a fixture in `test/fixtures/` and a test asserting the exact flagged lines. `test/recommended.test.js` packs the package, installs it into a temp project and lints through the published entry points (`configs/recommended`, `presets/recommended`, single rules), which is how users run it.
+
+The package is published with a `biome-manifest.json`, Biome's [package format](https://biomejs.dev/guides/publish-packages) for rules, presets and configs. Add new rules to its `rules` list and `recommended` preset.
 
 ## GritQL quirks in Biome
 
 - Regexes must match the whole node text. Use `r"(?s).*\p{L}.*"` for "contains a letter", not `r"\p{L}"`.
 - Capturing groups in a regex silently prevent any match. Use non-capturing groups: `r"(?:title|alt)"`.
 - Plugin compile errors only say "Failed to compile the Grit plugin". Bisect the pattern in a scratch file.
-- The plugin file name is the suppression name: `rules/foo.grit` is suppressed with `biome-ignore lint/plugin/foo`.
+- Rules loaded by package name are suppressed with `biome-ignore lint/plugin/<package>/<rule>`. Rules loaded by file path use the file name instead, so `configs/recommended.json` loads the preset by package name to keep one suppression name.
 - Use `biome inspect file <path>` or the playground to find node names like `JsxAttribute` and their fields.
 
 ## Releasing
