@@ -1,0 +1,14 @@
+language js
+
+JsxText() as $text where {
+  $text <: r"(?s).*\p{L}.*",
+  not $text <: within or {
+    `<Trans $_>$_</Trans>`,
+    `<Translation $_>$_</Translation>`
+  },
+  register_diagnostic(
+    span=$text,
+    message="[no-literal-jsx-text] Untranslated JSX text. Wrap it with t() or <Trans>.",
+    severity="error"
+  )
+}

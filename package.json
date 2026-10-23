@@ -1,0 +1,22 @@
+{
+  "name": "biome-plugin-i18next",
+  "version": "0.0.0",
+  "description": "Catch untranslated user-facing strings with Biome",
+  "license": "MIT",
+  "type": "module",
+  "files": ["rules", "recommended.json"],
+  "exports": {
+    "./recommended": "./recommended.json",
+    "./package.json": "./package.json"
+  },
+  "keywords": ["biome", "biome-plugin", "i18next", "i18n", "gritql", "lint"],
+  "peerDependencies": {
+    "@biomejs/biome": ">=2.6.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.2"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\""
+  }
+}
