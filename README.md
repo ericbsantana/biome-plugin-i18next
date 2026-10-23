@@ -12,7 +12,7 @@ npm i -D biome-plugin-i18next
 }
 ```
 
-Diagnostics show up in `biome lint`, `biome check`, your editor and CI. Requires Biome 2.6 or newer.
+Diagnostics show up in `biome lint`, `biome check`, your editor and CI. Requires Biome 2.6.2 or newer.
 
 ## Rules
 

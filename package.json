@@ -3,18 +3,41 @@
   "version": "0.0.0",
   "description": "Catch untranslated user-facing strings with Biome",
   "license": "MIT",
+  "author": "Eric Santana",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericbsantana/biome-plugin-i18next.git"
+  },
+  "homepage": "https://github.com/ericbsantana/biome-plugin-i18next#readme",
+  "bugs": {
+    "url": "https://github.com/ericbsantana/biome-plugin-i18next/issues"
+  },
   "type": "module",
-  "files": ["rules", "recommended.json", "README.md"],
+  "files": [
+    "rules",
+    "recommended.json"
+  ],
   "exports": {
     "./recommended": "./recommended.json",
     "./package.json": "./package.json"
   },
-  "keywords": ["biome", "biome-plugin", "i18next", "i18n", "gritql", "lint"],
+  "keywords": [
+    "biome",
+    "biome-plugin",
+    "i18next",
+    "i18n",
+    "gritql",
+    "lint"
+  ],
   "peerDependencies": {
-    "@biomejs/biome": ">=2.6.0"
+    "@biomejs/biome": ">=2.6.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "test": "node --test \"test/*.test.js\""
