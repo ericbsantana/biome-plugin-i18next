@@ -1,0 +1,24 @@
+language js
+
+JsxAttribute(name=$name, initializer=JsxAttributeInitializerClause(value=$value)) where {
+  $name <: r"(?:placeholder|title|alt|label|aria-label|aria-description|aria-placeholder|aria-roledescription|aria-valuetext)",
+  $value <: or {
+    and {
+      or {
+        JsxString(),
+        JsxExpressionAttributeValue(expression=JsStringLiteralExpression())
+      },
+      r"(?s).*\p{L}.*"
+    },
+    JsxExpressionAttributeValue(
+      expression=JsTemplateExpression(tag=., elements=some JsTemplateChunkElement() as $chunk)
+    ) where {
+      $chunk <: r"(?s).*\p{L}.*"
+    }
+  },
+  register_diagnostic(
+    span=$value,
+    message="[no-literal-jsx-attribute] Untranslated text in a user-facing attribute. Use t().",
+    severity="error"
+  )
+}
