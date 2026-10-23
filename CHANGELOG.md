@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/ericbsantana/biome-plugin-i18next/compare/biome-plugin-i18next-v1.0.0...biome-plugin-i18next-v1.1.0) (2026-10-23)
+
+
+### Features
+
+* publish rules, preset and config through biome-manifest.json ([66e62a1](https://github.com/ericbsantana/biome-plugin-i18next/commit/66e62a109028bc8ba57515ea1ec0813bcaf64296))
+
+
+### Bug Fixes
+
+* keep the 1.0.0 recommended extends path working ([66e62a1](https://github.com/ericbsantana/biome-plugin-i18next/commit/66e62a109028bc8ba57515ea1ec0813bcaf64296))
+
 ## 1.0.0 (2026-10-23)
 
 
