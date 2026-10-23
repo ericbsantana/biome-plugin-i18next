@@ -1,17 +1,26 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { before, test } from "node:test";
-import { fileURLToPath } from "node:url";
+import { after, before, test } from "node:test";
+import { root, runBiome } from "./lint.js";
 
-const root = fileURLToPath(new URL("..", import.meta.url));
-const biome = join(root, "node_modules", ".bin", "biome");
+const tempDirs = [];
 let tarball;
 
+function tempDir(prefix) {
+  const dir = mkdtempSync(join(tmpdir(), prefix));
+  tempDirs.push(dir);
+  return dir;
+}
+
+after(() => {
+  for (const dir of tempDirs) rmSync(dir, { recursive: true, force: true });
+});
+
 before(() => {
-  const dir = mkdtempSync(join(tmpdir(), "biome-i18next-pack-"));
+  const dir = tempDir("biome-i18next-pack-");
   const name = execFileSync("npm", ["pack", "--silent", "--pack-destination", dir], {
     cwd: root,
     encoding: "utf8",
@@ -20,7 +29,7 @@ before(() => {
 });
 
 function lintConsumer(biomeConfig, files) {
-  const project = mkdtempSync(join(tmpdir(), "biome-i18next-"));
+  const project = tempDir("biome-i18next-");
   writeFileSync(join(project, "package.json"), JSON.stringify({ name: "consumer", private: true }));
   execFileSync("npm", ["install", "--silent", "--no-audit", "--no-fund", "--legacy-peer-deps", tarball], {
     cwd: project,
@@ -31,18 +40,8 @@ function lintConsumer(biomeConfig, files) {
     writeFileSync(join(project, path), content);
   }
 
-  let stdout;
-  try {
-    stdout = execFileSync(biome, ["lint", "--reporter=json", "src"], {
-      cwd: project,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "ignore"],
-    });
-  } catch (error) {
-    stdout = error.stdout;
-  }
-  return JSON.parse(stdout)
-    .diagnostics.filter((d) => d.category === "plugin")
+  return runBiome("src", project)
+    .filter((d) => d.category === "plugin")
     .map((d) => `${d.location.path}:${d.message.match(/^\[(.+?)\]/)[1]}`)
     .sort();
 }

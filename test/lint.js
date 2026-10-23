@@ -1,21 +1,23 @@
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-const root = fileURLToPath(new URL("..", import.meta.url));
+export const root = fileURLToPath(new URL("..", import.meta.url));
 const biome = `${root}node_modules/.bin/biome`;
 
-export function lint(fixture, cwd = `${root}test`) {
-  let stdout;
+export function runBiome(path, cwd) {
+  const result = spawnSync(biome, ["lint", "--reporter=json", "--max-diagnostics=none", path], {
+    cwd,
+    encoding: "utf8",
+  });
   try {
-    stdout = execFileSync(
-      biome,
-      ["lint", "--reporter=json", "--max-diagnostics=none", `fixtures/${fixture}`],
-      { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
-    );
-  } catch (error) {
-    stdout = error.stdout;
+    return JSON.parse(result.stdout).diagnostics;
+  } catch {
+    throw new Error(`Biome did not produce a report (exit ${result.status}):\n${result.stderr}${result.stdout}`);
   }
-  return JSON.parse(stdout).diagnostics.map((d) => ({
+}
+
+export function lint(fixture) {
+  return runBiome(`fixtures/${fixture}`, `${root}test`).map((d) => ({
     line: d.location.start.line,
     message: d.message,
   }));
