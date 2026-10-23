@@ -1,15 +1,28 @@
 name: CI
+
 on:
   push:
     branches: [main]
   pull_request:
+
+permissions:
+  contents: read
+
 jobs:
   test:
+    name: Biome ${{ matrix.biome }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        biome: ["2.6.2", "latest"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
+          cache: npm
       - run: npm ci
+      - run: npm install --no-save @biomejs/biome@${{ matrix.biome }}
+      - run: npx biome --version
       - run: npm test
