@@ -4,7 +4,7 @@
   "description": "Catch untranslated user-facing strings with Biome",
   "license": "MIT",
   "type": "module",
-  "files": ["rules", "recommended.json"],
+  "files": ["rules", "recommended.json", "README.md"],
   "exports": {
     "./recommended": "./recommended.json",
     "./package.json": "./package.json"
