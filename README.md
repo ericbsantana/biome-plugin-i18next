@@ -8,7 +8,7 @@ npm i -D biome-plugin-i18next
 
 ```json
 {
-  "extends": ["biome-plugin-i18next/recommended"]
+  "extends": ["biome-plugin-i18next/configs/recommended"]
 }
 ```
 
@@ -29,7 +29,7 @@ The recommended config skips `*.test.*`, `*.spec.*`, `*.stories.*`, `__tests__/`
 ## Suppressing
 
 ```tsx
-// biome-ignore lint/plugin/no-literal-jsx-text: brand name
+// biome-ignore lint/plugin/biome-plugin-i18next/no-literal-jsx-text: brand name
 <span>Acme</span>
 ```
 
@@ -37,16 +37,22 @@ The recommended config skips `*.test.*`, `*.spec.*`, `*.stories.*`, `__tests__/`
 
 ## Customizing
 
-Biome plugins don't take options. To change which files are checked, list the rules yourself instead of extending `recommended`:
+Biome plugins don't take options, but you can choose which rules run and on which files. Use the preset or individual rules instead of the config:
 
 ```json
 {
   "plugins": [
     {
-      "path": "./node_modules/biome-plugin-i18next/rules/no-literal-jsx-text.grit",
+      "path": "biome-plugin-i18next/presets/recommended",
       "includes": ["src/**", "!src/admin/**"]
     }
   ]
+}
+```
+
+```json
+{
+  "plugins": ["biome-plugin-i18next/no-literal-jsx-text", "biome-plugin-i18next/no-literal-jsx-attribute"]
 }
 ```
 

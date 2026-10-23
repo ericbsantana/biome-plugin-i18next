@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/manifest_schema.json",
+  "version": 1,
+  "plugins": {
+    "rules": [
+      { "no-literal-jsx-text": "./rules/no-literal-jsx-text.grit" },
+      { "no-literal-jsx-attribute": "./rules/no-literal-jsx-attribute.grit" },
+      { "no-literal-ui-call": "./rules/no-literal-ui-call.grit" }
+    ],
+    "presets": {
+      "recommended": ["no-literal-jsx-text", "no-literal-jsx-attribute", "no-literal-ui-call"]
+    }
+  },
+  "configs": [{ "recommended": "./configs/recommended.json" }]
+}

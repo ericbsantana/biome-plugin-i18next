@@ -1,0 +1,9 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.2/schema.json",
+  "plugins": [
+    {
+      "path": "biome-plugin-i18next/presets/recommended",
+      "includes": ["**", "!**/*.test.*", "!**/*.spec.*", "!**/*.stories.*", "!**/__tests__/**", "!**/__mocks__/**"]
+    }
+  ]
+}

@@ -14,11 +14,13 @@
   },
   "type": "module",
   "files": [
+    "biome-manifest.json",
     "rules",
-    "recommended.json"
+    "configs"
   ],
   "exports": {
-    "./recommended": "./recommended.json",
+    "biome": "./biome-manifest.json",
+    "./recommended": "./configs/recommended.json",
     "./package.json": "./package.json"
   },
   "keywords": [
