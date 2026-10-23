@@ -4,25 +4,36 @@ on:
   push:
     branches: [main]
   pull_request:
+  schedule:
+    - cron: "0 6 * * 1"
 
-permissions:
-  contents: read
+permissions: {}
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
     name: Biome ${{ matrix.biome }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
         biome: ["2.6.2", "latest"]
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           cache: npm
-      - run: npm ci
-      - run: npm install --no-save @biomejs/biome@${{ matrix.biome }}
+      - run: npm ci --ignore-scripts
+      - run: npm install --no-save --ignore-scripts "@biomejs/biome@${BIOME_VERSION}"
+        env:
+          BIOME_VERSION: ${{ matrix.biome }}
       - run: npx biome --version
       - run: npm test
