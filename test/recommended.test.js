@@ -61,6 +61,11 @@ test("recommended config works through extends after a real npm install", () => 
   assert.deepEqual(found, allRules);
 });
 
+test("the 1.0.0 extends path keeps working", () => {
+  const found = lintConsumer({ extends: ["biome-plugin-i18next/recommended"] }, { "src/App.tsx": app });
+  assert.deepEqual(found, allRules);
+});
+
 test("recommended preset enables every rule", () => {
   const found = lintConsumer({ plugins: ["biome-plugin-i18next/presets/recommended"] }, { "src/App.tsx": app });
   assert.deepEqual(found, allRules);
