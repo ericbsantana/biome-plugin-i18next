@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@biomejs/biome/configuration_schema.json",
   "root": true,
-  "plugins": ["../rules/no-literal-jsx-text.grit", "../rules/no-literal-jsx-attribute.grit"],
+  "plugins": ["../rules/no-literal-jsx-text.grit", "../rules/no-literal-jsx-attribute.grit", "../rules/no-literal-ui-call.grit"],
   "linter": { "rules": { "preset": "none" } }
 }

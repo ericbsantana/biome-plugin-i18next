@@ -1,0 +1,22 @@
+language js
+
+or {
+  and { JsStringLiteralExpression(), r"(?s).*\p{L}.*" },
+  JsTemplateExpression(tag=., elements=some JsTemplateChunkElement() as $chunk) where {
+    $chunk <: r"(?s).*\p{L}.*"
+  }
+} as $text where {
+  $text <: within `$fn($args)` where {
+    $fn <: or {
+      `alert`, `confirm`, `prompt`,
+      `window.alert`, `window.confirm`, `window.prompt`,
+      `toast`, `toast.$_`
+    },
+    $args <: some $text
+  },
+  register_diagnostic(
+    span=$text,
+    message="[no-literal-ui-call] Untranslated text shown to the user. Use t().",
+    severity="error"
+  )
+}
