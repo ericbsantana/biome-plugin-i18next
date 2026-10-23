@@ -25,7 +25,10 @@ The release PR is opened by `GITHUB_TOKEN`, so CI does not run on it. The publis
 
 ### One-time setup
 
+Publishing uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC), so no npm token is stored in GitHub.
+
 1. GitHub → Settings → Actions → General → Workflow permissions: enable "Allow GitHub Actions to create and approve pull requests".
 2. GitHub → Settings → Environments: create an environment named `npm`.
-3. First publish: npm trusted publishing can only be configured for a package that already exists, so the first release needs a token. Create a granular npm access token with publish rights and add it as the `NPM_TOKEN` secret in the `npm` environment.
-4. After the first release: on npmjs.com → package settings → Trusted Publisher, add GitHub Actions with owner `ericbsantana`, repository `biome-plugin-i18next`, workflow `release.yml` and environment `npm`. Then delete the `NPM_TOKEN` secret and revoke the token.
+3. A trusted publisher can only be added to a package that already exists, so publish a placeholder once from your machine: `npm login`, then `npm publish --provenance=false` (publishes `0.0.0`).
+4. On npmjs.com → package Settings → Trusted Publisher, add GitHub Actions with owner `ericbsantana`, repository `biome-plugin-i18next`, workflow `release.yml` and environment `npm`. The first OIDC publish must happen within 2 days of adding it.
+5. In package Settings → Publishing access, select "Require two-factor authentication and disallow tokens".
